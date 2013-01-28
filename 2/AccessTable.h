@@ -1,6 +1,9 @@
 #ifndef ACCESSTABLE_H
 #define ACCESSTABLE_H
 
+#include <string>
+#include <vector>
+
 enum users_t {
     ADMIN,
     USER_1,
@@ -11,14 +14,14 @@ enum users_t {
 };
 
 enum permission_t {
-    FULL_PROHIBITION = 0000,
-    TRANSFER = 0001,
-    WRITE = 0010,
-    WRITE_TRANSFER= 0011,
-    READ = 0100,
-    READ_TRANSFER = 0101,
-    READ_WRITE = 0110,
-    FULL_ACCESS = 0111
+    FULL_PROHIBITION,
+    TRANSFER,
+    WRITE,
+    WRITE_TRANSFER,
+    READ,
+    READ_TRANSFER,
+    READ_WRITE,
+    FULL_ACCESS
 };
 
 class AccessTable
@@ -26,14 +29,18 @@ class AccessTable
 public:
     AccessTable(void);
     AccessTable(int userC, int objectC);
-    int getPermissionForUserObject(const int user, const int object) const;
+    const std::string getPermissionForUserObject(const int user, const int object) const;
     void setPermissionForUserObject(const int user, const int object, const int permission);
+    bool containsUser(const std::string userName);
+    int getUserId(const std::string userName);
     ~AccessTable(void);
 
 private:
     int userCount;
     int objectCount;
     int* table;
+    std::vector<std::string> users;
+    std::vector<std::string> permissions;
 
     void init();
 };
