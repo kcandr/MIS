@@ -10,7 +10,9 @@ AccessTable::AccessTable(void) :
 AccessTable::AccessTable(int userC, int objectC) : 
     userCount(userC), objectCount(objectC)
 {
-    table = new int(userCount * objectCount);
+	users.reserve(userCount);
+	permissions.reserve(objectCount);
+	table.reserve(userCount * objectCount);
     init();
 }
 
@@ -24,35 +26,56 @@ void AccessTable::init()
     users.push_back("guest");
 
     permissions.push_back("FULL PROHIBITION");
-    permissions.push_back("TRANSFER");
+    permissions.push_back("GRANT");
     permissions.push_back("WRITE");
-    permissions.push_back("WRITE, TRANSFER");
+    permissions.push_back("WRITE, GRANT");
     permissions.push_back("READ");
-    permissions.push_back("READ, TRANSFER");
+    permissions.push_back("READ, GRANT");
     permissions.push_back("READ, WRITE");
     permissions.push_back("FULL ACCESS");
-
+	
+	std::vector<int> tmp;
     for (int col = 0; col < objectCount; ++col) {
-        table[ADMIN * objectCount + col] = FULL_ACCESS;
+		tmp.push_back(FULL_ACCESS);
     }
+	table.push_back(tmp);
+	tmp.clear();
 
-    for (int row = 1; row < userCount - 1; ++row)
+    for (int row = 1; row < userCount - 1; ++row) {
         for (int col = 0; col < objectCount; ++col) {
-            table[row * objectCount + col] = rand() % userCount + 1 ;
+            tmp.push_back(rand() % (FULL_ACCESS + 1));
         }
+		table.push_back(tmp);
+		tmp.clear();
+	}
+	tmp.clear();
 
     for (int col = 0; col < objectCount; ++col) {
         if ( rand() % 2 == FULL_PROHIBITION ) {
-            table[GUEST * objectCount + col] = FULL_PROHIBITION;
+            tmp.push_back(FULL_PROHIBITION);
         } else {
-            table[GUEST * objectCount + col] = READ;
+            tmp.push_back(READ);
         }
     }
+	table.push_back(tmp);
 }
 
-const std::string AccessTable::getPermissionForUserObject(const int user, const int object) const
+std::string AccessTable::getPermissionString(const int user, const int object) const
 {
-    return permissions.at( table[user * objectCount + object] );
+    return permissions.at( table.at(user).at(object) );
+}
+
+int AccessTable::getPermissionId(const int user, const int object) const
+{
+	return table.at(user).at(object);
+}
+
+int AccessTable::getPermissionId(const std::string perm) const
+{
+	for (int i = 0; i < 8; ++i) {
+		if ( permissions.at(i).compare(perm) == 0)
+			return i;
+	}
 }
 
 bool AccessTable::containsUser(const std::string userName)
@@ -70,6 +93,11 @@ int AccessTable::getUserId(const std::string userName)
         if ( users.at(i) == userName)
             return i;
     return -1;
+}
+
+void AccessTable::setPermissionForUserObject(const int user, const int object, const int permission)
+{
+	table.at(user)[object] |= permission;
 }
 
 AccessTable::~AccessTable(void)

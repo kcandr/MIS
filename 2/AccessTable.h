@@ -15,11 +15,11 @@ enum users_t {
 
 enum permission_t {
     FULL_PROHIBITION,
-    TRANSFER,
+    GRANT,
     WRITE,
-    WRITE_TRANSFER,
+    WRITE_GRANT,
     READ,
-    READ_TRANSFER,
+    READ_GRANT,
     READ_WRITE,
     FULL_ACCESS
 };
@@ -29,8 +29,10 @@ class AccessTable
 public:
     AccessTable(void);
     AccessTable(int userC, int objectC);
-    const std::string getPermissionForUserObject(const int user, const int object) const;
-    void setPermissionForUserObject(const int user, const int object, const int permission);
+    std::string getPermissionString(const int user, const int object) const;
+	int getPermissionId(const int user, const int object) const;
+    int getPermissionId(const std::string perm) const;
+	void setPermissionForUserObject(const int user, const int object, const int permission);
     bool containsUser(const std::string userName);
     int getUserId(const std::string userName);
     ~AccessTable(void);
@@ -38,7 +40,7 @@ public:
 private:
     int userCount;
     int objectCount;
-    int* table;
+	std::vector<std::vector<int> > table;
     std::vector<std::string> users;
     std::vector<std::string> permissions;
 
