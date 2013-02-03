@@ -76,6 +76,7 @@ int AccessTable::getPermissionId(const std::string perm) const
 		if ( permissions.at(i).compare(perm) == 0)
 			return i;
 	}
+    return 0;
 }
 
 bool AccessTable::containsUser(const std::string userName)
