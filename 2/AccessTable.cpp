@@ -12,17 +12,17 @@ AccessTable::AccessTable(int userC, int objectC) :
 {
 	users.reserve(userCount);
 	permissions.reserve(objectCount);
-	table.reserve(userCount * objectCount);
+	table.reserve(userCount);
     init();
 }
 
 void AccessTable::init()
 {
     users.push_back("admin");
-    users.push_back("user_1");
-    users.push_back("user_2");
-    users.push_back("user_3");
-    users.push_back("user_4");
+    users.push_back("user1");
+    users.push_back("user2");
+    users.push_back("user3");
+    users.push_back("user4");
     users.push_back("guest");
 
     permissions.push_back("FULL PROHIBITION");

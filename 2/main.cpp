@@ -5,16 +5,17 @@ using namespace std;
 
 int main()
 {
+	setlocale(LC_ALL, "Russian");
     AccessTable accessTable(6, 5);
     string login;
     string operation;
 	do {
-		cout << "Enter login: ";
+		cout << "Введите логин: ";
 		cin >> login;
     
 		if ( accessTable.containsUser(login) ) {
 			int userId = accessTable.getUserId(login);
-			cout << "Success. Your permissions: " << endl;
+			cout << "Отлично. Ваши права: " << endl;
 			for (int obj = 0; obj < 5; ++obj) {
 				string perm = accessTable.getPermissionString(userId, obj);
 				cout << "Object " << obj + 1 << ": " << perm << endl;
@@ -22,43 +23,43 @@ int main()
 			do 
 			{
 				int obj;
-				cout << "Enter operation: ";
+				cout << "Введите операцию (read, write, grant): ";
 				cin >> operation;
 				if ( operation == "read" ) {
-					cout << "Object: ";
+					cout << "Объект: ";
 					cin >> obj;
 					int k = accessTable.getPermissionId(userId, --obj);
 					if ( k >= READ && k <= FULL_ACCESS )
-						cout << "Success" << endl;
+						cout << "Отлично" << endl;
 					else
-						cout << "Access denied" << endl;
+						cout << "Доступ запрещён" << endl;
 				} else if ( operation == "write" ) {
-					cout << "Object: ";
+					cout << "Объект: ";
 					cin >> obj;
 					int k = accessTable.getPermissionId(userId, --obj);
 					if ( k == WRITE || k == WRITE_GRANT || k == READ_WRITE || k == FULL_ACCESS) {
-						cout << "Success" << endl;
+						cout << "Отлично" << endl;
 					} else {
-						cout << "Access denied" << endl;
+						cout << "Доступ запрещён" << endl;
 					}
 				} else if ( operation == "grant" ) {
-					cout << "Object: ";
+					cout << "Объект: ";
 					cin >> obj;
 					int k = accessTable.getPermissionId(userId, --obj);
 					if ( k == GRANT || k == WRITE_GRANT || k == READ_GRANT || k == FULL_ACCESS) {
 						std::string user;
 						std::string permission;
-						cout << "Permission: ";
+						cout << "Право: ";
 						cin >> permission;
 						int permissionId = accessTable.getPermissionId(permission);
-						cout << "User: ";
+						cout << "Пользователь: ";
 						cin >> user;
 						int userId = accessTable.getUserId(user);
 
 						accessTable.setPermissionForUserObject(userId, obj, permissionId);
-						cout << "Success" << endl;
+						cout << "Отлично" << endl;
 					} else {
-						cout << "Access denied" << endl;
+						cout << "Доступ запрещён" << endl;
 					}
 				} else if ( operation == "quit" ) {
 					break;

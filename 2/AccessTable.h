@@ -4,15 +4,6 @@
 #include <string>
 #include <vector>
 
-enum users_t {
-    ADMIN,
-    USER_1,
-    USER_2,
-    USER_3,
-    USER_4,
-    GUEST
-};
-
 enum permission_t {
     FULL_PROHIBITION,
     GRANT,
