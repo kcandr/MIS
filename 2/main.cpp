@@ -9,6 +9,8 @@ int main()
     AccessTable accessTable(6, 5);
     string login;
     string operation;
+    accessTable.printInfo();
+
 	do {
 		cout << "¬ведите логин: ";
 		cin >> login;

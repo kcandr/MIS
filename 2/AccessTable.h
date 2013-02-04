@@ -26,6 +26,7 @@ public:
 	void setPermissionForUserObject(const int user, const int object, const int permission);
     bool containsUser(const std::string userName);
     int getUserId(const std::string userName);
+    void printInfo();
     ~AccessTable(void);
 
 private:

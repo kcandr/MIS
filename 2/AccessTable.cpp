@@ -1,5 +1,7 @@
 #include "AccessTable.h"
 #include <cstdlib>
+#include <iostream>
+#include <iomanip>
 #include <algorithm>
 
 AccessTable::AccessTable(void) :
@@ -99,6 +101,18 @@ int AccessTable::getUserId(const std::string userName)
 void AccessTable::setPermissionForUserObject(const int user, const int object, const int permission)
 {
 	table.at(user)[object] |= permission;
+}
+
+void AccessTable::printInfo()
+{
+    std::cout << "       |  Object 1  |    Object 2   |   Object 3    |    Object 4   | Object 5 " << std::endl;
+    for (int us = 0; us < userCount; ++us) {
+        std::cout << users[us] << " ";
+        for (int ob = 0; ob < objectCount; ++ob) {
+            std::cout << std::setw(13) << getPermissionString(us, ob) << " | ";
+        }
+        std::cout << std::endl;
+    }
 }
 
 AccessTable::~AccessTable(void)
