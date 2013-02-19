@@ -54,12 +54,22 @@ int main()
 						cout << "Право: ";
 						cin >> permission;
 						int permissionId = accessTable.getPermissionId(permission);
+                        if ( permissionId == GRANT) {
+                            cout << "Нельзя." << endl;
+                            continue;
+                        }                
 						cout << "Пользователь: ";
 						cin >> user;
-						int userId = accessTable.getUserId(user);
-
-						accessTable.setPermissionForUserObject(userId, obj, permissionId);
-						cout << "Отлично" << endl;
+						int tmpUserId = accessTable.getUserId(user);
+                        if ( accessTable.havePermission(userId, obj, permissionId) ) {
+						    accessTable.setPermissionForUserObject(tmpUserId, obj, permissionId);
+                        } else {
+                            cout << "Нельзя передать право" << endl;
+                            continue;
+                        }
+						cout << "Отлично" << endl << endl ;
+                        accessTable.printInfo();
+                        cout << endl;
 					} else {
 						cout << "Доступ запрещён" << endl;
 					}

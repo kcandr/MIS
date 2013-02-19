@@ -100,7 +100,7 @@ int AccessTable::getUserId(const std::string userName)
 
 void AccessTable::setPermissionForUserObject(const int user, const int object, const int permission)
 {
-	table.at(user)[object] |= permission;
+	table[user][object] |= permission;
 }
 
 void AccessTable::printInfo()
@@ -113,6 +113,20 @@ void AccessTable::printInfo()
         }
         std::cout << std::endl;
     }
+}
+
+bool AccessTable::havePermission(const int user, const int object, const int perm)
+{
+    int currentPerm = table.at(user).at(object);
+    if ( perm == WRITE && (currentPerm == WRITE || currentPerm == WRITE_GRANT 
+        || currentPerm == READ_WRITE || currentPerm == FULL_ACCESS) ) {
+            return true;
+    }
+    if ( perm == READ && (currentPerm == READ || currentPerm == READ_GRANT 
+        || currentPerm == READ_WRITE || currentPerm == FULL_ACCESS) ) {
+            return true;
+    }
+    return false;
 }
 
 AccessTable::~AccessTable(void)
